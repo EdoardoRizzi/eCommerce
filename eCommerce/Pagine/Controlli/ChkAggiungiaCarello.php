@@ -8,13 +8,9 @@ $IdArticolo = $_SESSION['idarticolo'];
 $quantita = $_POST["comboQuantita"];
 
 //inserisco l'articolo nel carello
-if (isset($_SESSION['IdCarello'])) { //se l'utente è loggato prendo l'id dalle sessione
-    $stmt = $conn->prepare("INSERT INTO contiene (IdCarello, IdArticolo, QuantitaContiene) VALUES (?,?,?)");
-    $stmt->bind_param("iii", $_SESSION["IdCarello"], $IdArticolo, $quantita);
-} else { //se non è loggato prendo l'id dai cookies
-    $stmt = $conn->prepare("INSERT INTO contiene (IdCarello, IdArticolo, QuantitaContiene) VALUES (?,?,?)");
-    $stmt->bind_param("iii", $_COOKIE["Anonymous"], $IdArticolo, $quantita);
-}
+$stmt = $conn->prepare("INSERT INTO contiene (IdCarello, IdArticolo, QuantitaContiene) VALUES (?,?,?)");
+$stmt->bind_param("iii", $_COOKIE["Anonymous"], $IdArticolo, $quantita);
+
 
 $stmt->execute();
 
@@ -28,14 +24,14 @@ $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     if ($row = $result->fetch_assoc()) {
-        $quantitamagazzino = $row['Quantita'];    
-    }    
+        $quantitamagazzino = $row['Quantita'];
+    }
 }
 
 //sottraggo la quantita appena presa da quella in magazzino
 $quantita = $quantitamagazzino - $quantita;
 //aggiorno il db
-$stmt = $conn->prepare("UPDATE articolo SET Quantita = ". $quantita ." WHERE ID = " . $IdArticolo . "");
+$stmt = $conn->prepare("UPDATE articolo SET Quantita = " . $quantita . " WHERE ID = " . $IdArticolo . "");
 $stmt->execute();
 
-header("location:../../Index.php");    
+header("location:../../Index.php");

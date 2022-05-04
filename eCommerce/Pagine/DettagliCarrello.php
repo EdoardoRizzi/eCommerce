@@ -23,7 +23,7 @@ session_start();
 
 </head>
 
-<body id="page-top" onload="changeVisable()">
+<body id="page-top">
     <!-- Navigation-->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
         <div class="container">
@@ -45,7 +45,6 @@ session_start();
                     }
                     if (isset($_SESSION['admin'])) {
                         echo "<li class='nav-item'><a class='nav-link' href='AggiungiArticolo.php'>AGGIUNGI ARTICOLO</a></li>";
-                        echo "<li class='nav-item'><a class='nav-link' href='RimuoviArticolo.php'>RIMUOVI ARTICOLO</a></li>";
                     }
                     ?>
                 </ul>
@@ -108,7 +107,14 @@ session_start();
                             echo "</div>";
                         }
                     }
-                    echo "<a class='btn btn-primary btn-xl text-uppercase' href='Controlli/ChkCompraCarello.php'>Buy Now</a>";
+                    if(isset($_SESSION['id'])){
+                        echo "<a class='btn btn-primary btn-xl text-uppercase' href='Controlli/ChkCompraCarello.php'>Buy Now</a>";
+                    }else{
+                        echo "<div class='text-center'>";
+                        echo "<div class='section-heading text-uppercase'>ACCEDI PER COMPRARE</div>";
+                        echo "</div>";
+                    }
+                   
                 }
                 ?>
 

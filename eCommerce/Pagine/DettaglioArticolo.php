@@ -56,7 +56,6 @@ session_start();
                     }
                     if (isset($_SESSION['admin'])) {
                         echo "<li class='nav-item'><a class='nav-link' href='AggiungiArticolo.php'>AGGIUNGI ARTICOLO</a></li>";
-                        echo "<li class='nav-item'><a class='nav-link' href='RimuoviArticolo.php'>RIMUOVI ARTICOLO</a></li>";
                     }
                     ?>
                     <li class="nav-item"><a class="nav-link" href="#contact">Comment</a></li>

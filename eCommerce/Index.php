@@ -68,46 +68,37 @@ include("Connessione/DefaultSetCookies.php")
         <div class="container">
             <div class="text-center">
                 <h2 class="section-heading text-uppercase">Articoli</h2>
-                <h3 class="section-subheading text-muted"></h3>
+                <h3 class="section-subheading text-muted">filtra per categoria</h3>
             </div>
             <div class="row">
                 <?php
                 include("Connessione/connection.php");
-                echo "<div class='col-md-12'>";
-                echo "<div class='col-md-6'>";
-                   //FILTRI
-                   $stmt = $conn->prepare("SELECT * FROM categoria WHERE 1");
+                echo "<div class='text-center'>";
+                //FILTRI
+                $stmt = $conn->prepare("SELECT * FROM categoria WHERE 1");
 
-                   $stmt->execute();
-                   $result = $stmt->get_result();
-   
-                   echo "<form method='GET'>";
-                   echo "<select name='combocategoria' class='form-select' aria-label='Default select example'>";
-                   echo "<option value=''></option>";
-                   if ($result->num_rows > 0) {
-                       for ($i = 1; $i < $result->num_rows + 1; $i++) {
-                           if ($row = $result->fetch_assoc()) {
-                               echo "<option value='" . $row['ID'] . "'>" . $row['Nome'] . "</option>";
-                           }
-                       }
-                   }
-                   echo "</select>";
-                   echo "<button class='btn btn-primary'>filtra</button>";
-                   echo "</form>";
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                echo "<form method='GET'>";
+                echo "<select name='combocategoria' class='form-select' aria-label='Default select example'>";
+                echo "<option value=''></option>";
+                if ($result->num_rows > 0) {
+                    for ($i = 1; $i < $result->num_rows + 1; $i++) {
+                        if ($row = $result->fetch_assoc()) {
+                            echo "<option value='" . $row['ID'] . "'>" . $row['Nome'] . "</option>";
+                        }
+                    }
+                }
+                echo "</select>";
+                echo "<button class='btn btn-primary'>filtra</button>";
+                echo "</form>";
+
                 echo "</div>";
-                echo "<div class='col-md-6'>";
-                    //PRODOTTI
-                    echo "<form method='GET'>";
-                    echo "<input type='text' name='txtFiltro' class='form-select' aria-label='Default select example'>";
-                    echo "<button class='btn btn-primary'>filtra</button>";
-                    echo "</form>";   
-                echo "</div>";
-                echo "</div>";
-             
-               
+
                 if (isset($_GET['combocategoria']) && $_GET['combocategoria'] != '') {
                     $stmt = $conn->prepare("SELECT * FROM articolo WHERE Quantita > '0' AND IdCategoria = " . $_GET['combocategoria'] . "");
-                } else if(isset($_GET['txtFiltro']) && $_GET['txtFiltro'] != ''){
+                } else if (isset($_GET['txtFiltro']) && $_GET['txtFiltro'] != '') {
                     $stmt = $conn->prepare("SELECT * FROM articolo WHERE Quantita > '0' AND Nome LIKE '%" . $_GET['txtFiltro'] . "%'");
                 } else {
                     $stmt = $conn->prepare("SELECT * FROM articolo WHERE Quantita > '0'");

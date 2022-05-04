@@ -3,11 +3,7 @@ session_start();
 include("../../Connessione/connection.php");
 include("../../Connessione/chkConnection.php");
 
-if (isset($_SESSION['IdCarello'])) {
-    $stmt = $conn->prepare("SELECT * FROM contiene JOIN articolo ON contiene.IdArticolo=articolo.ID WHERE IdCarello = " .  $_SESSION['IdCarello'] . "");
-} else {
-    $stmt = $conn->prepare("SELECT * FROM contiene JOIN articolo ON contiene.IdArticolo=articolo.ID WHERE IdCarello = " .  $_COOKIE["Anonymous"] . "");
-}
+$stmt = $conn->prepare("SELECT * FROM contiene JOIN articolo ON contiene.IdArticolo=articolo.ID WHERE IdCarello = " .  $_COOKIE["Anonymous"] . "");
 
 $stmt->execute();
 $result = $stmt->get_result();
@@ -22,13 +18,9 @@ if ($result->num_rows > 0) {
     }
 }
 
-if (isset($_SESSION['IdCarello'])) {
-    $stmt = $conn->prepare("INSERT INTO ordine (IdCarello, Prezzo) VALUES (?,?)");
-    $stmt->bind_param("ii", $_SESSION["IdCarello"],  $totale);
-} else {
-    $stmt = $conn->prepare("INSERT INTO ordine (IdCarello, Prezzo) VALUES (?,?)");
-    $stmt->bind_param("ii", $_COOKIE['Anonymous'],  $totale);
-}
+$stmt = $conn->prepare("INSERT INTO ordine (IdCarello, Prezzo) VALUES (?,?)");
+$stmt->bind_param("ii", $_COOKIE['Anonymous'],  $totale);
+
 
 $cookie_name = "Anonymous";
 
